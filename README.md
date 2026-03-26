@@ -165,8 +165,8 @@ npm run preview  # Preview hasil build
 - [x] Konfigurasi Supabase
 - [x] Auth context (login, register, logout)
 - [x] Protected route
-- [ ] Halaman Login & Register
-- [ ] Halaman Dashboard
+- [x] Halaman Login & Register
+- [x] Halaman Dashboard
 - [ ] Halaman Kanban Board
 - [ ] Drag & drop task
 - [ ] Halaman Detail Task
