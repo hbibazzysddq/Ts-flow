@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createColumns, getColumns, deleteColumns } from "../services/ColumnServices"
-import type { deleteTask } from "../services/TaskService"
 
 export const useColumns = (boardId: string) => {
     return useQuery({
@@ -29,7 +28,7 @@ export const useDeleteColumns = (boardId: string) => {
     return useMutation({
         mutationFn: (id: string) => deleteColumns(id),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['boards', boardId] })
+            queryClient.invalidateQueries({ queryKey: ['columns', boardId] })
         }
     })
 }
