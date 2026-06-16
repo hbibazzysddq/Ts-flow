@@ -11,10 +11,10 @@ const COLOR_NAMES = ["Indigo","Pink","Amber","Emerald","Blue","Violet","Red","Cy
 
 function getGreeting() {
   const h = new Date().getHours();
-  if (h < 12) return "Selamat pagi";
-  if (h < 15) return "Selamat siang";
-  if (h < 18) return "Selamat sore";
-  return "Selamat malam";
+  if (h < 12) return "Good morning";
+  if (h < 15) return "Good afternoon";
+  if (h < 18) return "Good afternoon";
+  return "Good evening";
 }
 
 function BoardCard({ board, onOpen, onDelete, shared }: {
@@ -61,10 +61,10 @@ function BoardCard({ board, onOpen, onDelete, shared }: {
         <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
           <div className="flex items-center gap-1 text-xs text-gray-400">
             <Calendar size={11} />
-            {daysSince === 0 ? "Hari ini" : daysSince === 1 ? "Kemarin" : `${daysSince}h lalu`}
+            {daysSince === 0 ? "Today" : daysSince === 1 ? "Yesterday" : `${daysSince}d ago`}
           </div>
           <div className="flex items-center gap-1 text-xs font-medium transition-all" style={{ color: hovered ? board.color : "#9ca3af" }}>
-            Buka <ArrowRight size={11} />
+            Open <ArrowRight size={11} />
           </div>
         </div>
       </div>
@@ -86,10 +86,10 @@ function InvitationModal({ onClose }: { onClose: () => void }) {
         <div className="flex items-center justify-between p-5 border-b border-gray-100">
           <div className="flex items-center gap-2">
             <Bell size={16} className="text-primary" />
-            <h2 className="text-sm font-semibold text-gray-900">Undangan</h2>
+            <h2 className="text-sm font-semibold text-gray-900">Invitations</h2>
             {invites.length > 0 && (
               <span className="text-[11px] text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md">
-                {invites.length} baru
+                {invites.length} new
               </span>
             )}
           </div>
@@ -102,8 +102,8 @@ function InvitationModal({ onClose }: { onClose: () => void }) {
           {invites.length === 0 && (
             <div className="flex flex-col items-center py-8 text-center">
               <Bell size={28} className="text-gray-300 mb-3" />
-              <p className="text-sm font-medium text-gray-900 mb-1">Tidak ada undangan</p>
-              <p className="text-xs text-gray-500">Kamu akan melihat undangan board di sini.</p>
+              <p className="text-sm font-medium text-gray-900 mb-1">No invitations</p>
+              <p className="text-xs text-gray-500">You'll see board invitations here.</p>
             </div>
           )}
           <div className="flex flex-col gap-3 max-h-80 overflow-y-auto">
@@ -121,7 +121,7 @@ function InvitationModal({ onClose }: { onClose: () => void }) {
                       <p className="text-sm font-semibold text-gray-900 truncate">{boardInfo.title ?? "Board"}</p>
                       <div className="flex items-center gap-1 text-xs text-gray-400">
                         <Mail size={10} />
-                        <span>Kamu diundang sebagai anggota</span>
+                        <span>You're invited as a member</span>
                       </div>
                     </div>
                   </div>
@@ -130,13 +130,13 @@ function InvitationModal({ onClose }: { onClose: () => void }) {
                       disabled={isPending}
                       className="flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg hover:bg-emerald-100 disabled:opacity-50 transition-colors">
                       <Check size={12} />
-                      {acceptInvite.isPending ? "..." : "Terima"}
+                      {acceptInvite.isPending ? "..." : "Accept"}
                     </button>
                     <button onClick={() => declineInvite.mutateAsync(inv.id)}
                       disabled={isPending}
                       className="flex items-center gap-1 text-xs font-medium text-red-600 bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg hover:bg-red-100 disabled:opacity-50 transition-colors">
                       <X size={12} />
-                      {declineInvite.isPending ? "..." : "Tolak"}
+                      {declineInvite.isPending ? "..." : "Decline"}
                     </button>
                   </div>
                 </div>
@@ -173,7 +173,7 @@ export default function Dashboard() {
 
   const handleDelete = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    if (confirm("Hapus board ini?")) await deleteBoards.mutateAsync(id);
+    if (confirm("Delete this board?")) await deleteBoards.mutateAsync(id);
   };
 
   const firstName = user?.email?.split("@")[0] ?? "there";
@@ -196,7 +196,7 @@ export default function Dashboard() {
         <div className="flex items-center gap-2">
           <button onClick={() => setShowInvites(true)}
             className="relative p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
-            title="Undangan">
+            title="Invitations">
             <Bell size={16} />
             {myInvites != null && (myInvites as any[]).length > 0 && (
               <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center shadow-sm">
@@ -207,7 +207,7 @@ export default function Dashboard() {
           <button onClick={() => navigate("/collab")}
             className="hidden sm:flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-900 px-2.5 py-1.5 rounded-lg hover:bg-gray-100 transition-colors">
             <Users size={13} />
-            Kolaborasi
+            Collaboration
           </button>
           <div className="hidden sm:flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5">
             <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary">
@@ -218,7 +218,7 @@ export default function Dashboard() {
           <button onClick={() => logout()}
             className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-900 px-2.5 py-1.5 rounded-lg hover:bg-gray-100 transition-colors">
             <LogOut size={13} />
-            <span className="hidden sm:inline">Keluar</span>
+            <span className="hidden sm:inline">Sign Out</span>
           </button>
         </div>
       </nav>
@@ -233,8 +233,8 @@ export default function Dashboard() {
           <button onClick={() => setShowModal(true)}
             className="flex items-center gap-1.5 bg-primary hover:bg-indigo-600 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors shadow-sm shadow-primary/20">
             <Plus size={15} strokeWidth={2.5} />
-            <span className="hidden sm:inline">Board baru</span>
-            <span className="sm:hidden">Baru</span>
+            <span className="hidden sm:inline">New Board</span>
+            <span className="sm:hidden">New</span>
           </button>
         </div>
 
@@ -242,9 +242,9 @@ export default function Dashboard() {
         {!isLoading && (
           <div className="grid grid-cols-3 gap-3 mb-8">
             {[
-              { label: "Board saya", value: boards?.length ?? 0, icon: "📋" },
-              { label: "Diundang ke", value: sharedBoards?.length ?? 0, icon: "🤝" },
-              { label: "Dibuat bulan ini", value: boards?.filter(b => new Date(b.created_at).getMonth() === new Date().getMonth()).length ?? 0, icon: "📅" },
+              { label: "My Boards", value: boards?.length ?? 0, icon: "📋" },
+              { label: "Collab", value: sharedBoards?.length ?? 0, icon: "🤝" },
+              { label: "Created this month", value: boards?.filter(b => new Date(b.created_at).getMonth() === new Date().getMonth()).length ?? 0, icon: "📅" },
             ].map(s => (
               <div key={s.label} className="bg-white border border-gray-200 rounded-xl px-4 py-3.5">
                 <div className="flex items-center gap-2 mb-1">
@@ -263,9 +263,9 @@ export default function Dashboard() {
             <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Mail size={16} className="text-amber-600" />
-                <h2 className="text-sm font-semibold text-amber-900">Undangan Board</h2>
+                <h2 className="text-sm font-semibold text-amber-900">Board Invitations</h2>
                 <span className="text-[11px] text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md">
-                  {(myInvites as any[]).length} baru
+                  {(myInvites as any[]).length} new
                 </span>
               </div>
               <div className="flex flex-col gap-3">
@@ -281,7 +281,7 @@ export default function Dashboard() {
                         </div>
                         <div className="min-w-0">
                           <p className="text-sm font-semibold text-gray-900 truncate">{boardInfo.title ?? "Board"}</p>
-                          <p className="text-xs text-gray-500">Kamu diundang untuk bergabung sebagai anggota</p>
+                          <p className="text-xs text-gray-500">You're invited to join as a member</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0 ml-3">
@@ -289,13 +289,13 @@ export default function Dashboard() {
                           disabled={isPending}
                           className="flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg hover:bg-emerald-100 disabled:opacity-50 transition-colors">
                           <Check size={12} />
-                          {acceptInvite.isPending ? "..." : "Terima"}
+                          {acceptInvite.isPending ? "..." : "Accept"}
                         </button>
                         <button onClick={() => declineInvite.mutateAsync(inv.id)}
                           disabled={isPending}
                           className="flex items-center gap-1 text-xs font-medium text-red-600 bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg hover:bg-red-100 disabled:opacity-50 transition-colors">
                           <X size={12} />
-                          {declineInvite.isPending ? "..." : "Tolak"}
+                          {declineInvite.isPending ? "..." : "Decline"}
                         </button>
                       </div>
                     </div>
@@ -310,8 +310,8 @@ export default function Dashboard() {
         <>
           {!isLoading && (boards?.length ?? 0) > 0 && (
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-semibold text-gray-700">Board Saya</h2>
-              <span className="text-xs text-gray-400">{boards?.length} board</span>
+              <h2 className="text-sm font-semibold text-gray-700">My Boards</h2>
+              <span className="text-xs text-gray-400">{boards?.length} boards</span>
             </div>
           )}
 
@@ -336,14 +336,14 @@ export default function Dashboard() {
               <div className="w-14 h-14 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center mb-4">
                 <LayoutGrid size={22} className="text-gray-400" />
               </div>
-              <p className="text-sm font-semibold text-gray-900 mb-1">Belum ada board</p>
+              <p className="text-sm font-semibold text-gray-900 mb-1">No boards yet</p>
               <p className="text-sm text-gray-500 mb-6 max-w-xs leading-relaxed">
-                Buat board pertama dan mulai organisir task kamu dalam kolom Kanban.
+                Create your first board and start organizing tasks in Kanban columns.
               </p>
               <button onClick={() => setShowModal(true)}
                 className="flex items-center gap-1.5 bg-primary hover:bg-indigo-600 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors">
                 <Plus size={14} strokeWidth={2.5} />
-                Buat board pertama
+                Create first board
               </button>
             </div>
           )}
@@ -363,7 +363,7 @@ export default function Dashboard() {
         {!isLoadingShared && (sharedBoards?.length ?? 0) > 0 && (
           <>
             <div className="flex items-center gap-2 mb-4">
-              <h2 className="text-sm font-semibold text-gray-700">Diundang</h2>
+              <h2 className="text-sm font-semibold text-gray-700">Collaborations</h2>
               <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md flex items-center gap-1">
                 <Users size={10} /> {sharedBoards?.length}
               </span>
@@ -393,7 +393,7 @@ export default function Dashboard() {
             <div className="w-8 h-1 bg-gray-200 rounded-full mx-auto mt-3 sm:hidden" />
             <div className="p-6">
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-base font-semibold text-gray-900">Board baru</h2>
+                <h2 className="text-base font-semibold text-gray-900">New Board</h2>
                 <button onClick={() => setShowModal(false)}
                   className="p-1 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -403,8 +403,8 @@ export default function Dashboard() {
               </div>
 
               <div className="mb-4">
-                <label className="block text-xs font-medium text-gray-700 mb-1.5">Nama board</label>
-                <input type="text" placeholder="cth: Project Website, Sprint Q2..."
+                <label className="block text-xs font-medium text-gray-700 mb-1.5">Board name</label>
+                <input type="text" placeholder="e.g. Project Website, Sprint Q2..."
                   value={title} onChange={e => setTitle(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && handleCreate()}
                   autoFocus
@@ -412,7 +412,7 @@ export default function Dashboard() {
               </div>
 
               <div className="mb-5">
-                <label className="block text-xs font-medium text-gray-700 mb-2">Warna</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Color</label>
                 <div className="flex gap-2 flex-wrap">
                   {COLORS.map((c, i) => (
                     <button key={c} onClick={() => setColor(c)} title={COLOR_NAMES[i]}
@@ -443,11 +443,11 @@ export default function Dashboard() {
               <div className="flex gap-2">
                 <button onClick={() => setShowModal(false)}
                   className="flex-1 py-2.5 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                  Batal
+                  Cancel
                 </button>
                 <button onClick={handleCreate} disabled={!title.trim() || createBoards.isPending}
                   className="flex-1 py-2.5 text-sm font-medium text-white bg-primary rounded-lg hover:bg-indigo-600 disabled:opacity-50 transition-colors">
-                  {createBoards.isPending ? "Membuat..." : "Buat Board"}
+                  {createBoards.isPending ? "Creating..." : "Create Board"}
                 </button>
               </div>
             </div>

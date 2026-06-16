@@ -37,11 +37,11 @@ function avatarInitial(email: string) {
 function timeAgo(dateStr: string, now: number) {
   const diff = now - new Date(dateStr).getTime();
   const m = Math.floor(diff / 60000);
-  if (m < 1) return "baru saja";
-  if (m < 60) return `${m}m lalu`;
+  if (m < 1) return "just now";
+  if (m < 60) return `${m}m ago`;
   const h = Math.floor(m / 60);
-  if (h < 24) return `${h}j lalu`;
-  return `${Math.floor(h / 24)}h lalu`;
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
 }
 
 export default function TaskDetail() {
@@ -214,21 +214,21 @@ export default function TaskDetail() {
             <ArrowLeft size={16} />
           </button>
           <span className="text-sm font-semibold text-gray-900">
-            Detail Task
+            Task Detail
           </span>
         </div>
         <div className="flex items-center gap-2">
           {saved && (
             <span className="flex items-center gap-1 text-xs text-green-600 bg-green-50 border border-green-200 px-2.5 py-1 rounded-lg fade-in">
-              <Check size={11} /> Tersimpan
+              <Check size={11} /> Saved
             </span>
           )}
           {updateTask.isPending && (
-            <span className="text-xs text-gray-400">Menyimpan...</span>
+            <span className="text-xs text-gray-400">Saving...</span>
           )}
           <button
             onClick={() => {
-              if (confirm("Hapus task ini?")) deleteTask.mutate();
+              if (confirm("Delete this task?")) deleteTask.mutate();
             }}
             className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
           >
@@ -245,7 +245,7 @@ export default function TaskDetail() {
             {/* Title */}
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1.5">
-                Judul
+                Title
               </label>
               <input
                 type="text"
@@ -259,14 +259,14 @@ export default function TaskDetail() {
             {/* Description */}
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1.5">
-                Deskripsi
+                Description
               </label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 onBlur={handleSave}
                 rows={4}
-                placeholder="Tambahkan deskripsi, langkah, atau catatan..."
+                placeholder="Add a description, steps, or notes..."
                 className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none leading-relaxed"
               />
             </div>
@@ -276,7 +276,7 @@ export default function TaskDetail() {
               <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100">
                 <MessageCircle size={14} className="text-gray-400" />
                 <span className="text-xs font-semibold text-gray-700">
-                  Komentar {comments?.length ? `(${comments.length})` : ""}
+                  Comments {comments?.length ? `(${comments.length})` : ""}
                 </span>
               </div>
 
@@ -284,7 +284,7 @@ export default function TaskDetail() {
               <div className="max-h-72 overflow-y-auto px-4 py-3 flex flex-col gap-4">
                 {comments?.length === 0 && (
                   <p className="text-xs text-gray-400 text-center py-4">
-                    Belum ada komentar
+                    No comments yet
                   </p>
                 )}
                 {comments?.map((c) => (
@@ -331,7 +331,7 @@ export default function TaskDetail() {
                     onKeyDown={(e) =>
                       e.key === "Enter" && !e.shiftKey && handleSendComment()
                     }
-                    placeholder="Tulis komentar... (Enter untuk kirim)"
+                    placeholder="Write a comment... (Enter to send)"
                     className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:border-primary focus:bg-white transition-all placeholder-gray-400"
                   />
                   <button
@@ -351,7 +351,7 @@ export default function TaskDetail() {
               disabled={updateTask.isPending}
               className="w-full py-2.5 bg-primary hover:bg-indigo-600 text-white text-sm font-medium rounded-xl disabled:opacity-50 transition-colors"
             >
-              {updateTask.isPending ? "Menyimpan..." : "Simpan Perubahan"}
+              {updateTask.isPending ? "Saving..." : "Save Changes"}
             </button>
           </div>
 
@@ -360,7 +360,7 @@ export default function TaskDetail() {
             {/* Priority */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
-                Prioritas
+                Priority
               </label>
               <div className="flex flex-col gap-1.5">
                 {PRIORITY_OPTIONS.map((p) => {
@@ -417,7 +417,7 @@ export default function TaskDetail() {
                     }}
                     className="text-[11px] text-gray-400 hover:text-red-500 transition-colors"
                   >
-                    Hapus
+                    Remove
                   </button>
                 </div>
               )}
@@ -429,7 +429,7 @@ export default function TaskDetail() {
                 <div className="flex items-center gap-1.5 mb-3">
                   <UserCheck size={13} className="text-gray-400" />
                   <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Ditugaskan
+                    Assigned to
                   </label>
                 </div>
                 <div className="flex flex-col gap-1.5">
@@ -454,7 +454,7 @@ export default function TaskDetail() {
                         <circle cx="12" cy="7" r="4" />
                       </svg>
                     </div>
-                    Tidak ditugaskan
+                    Not assigned
                     {!assignedEmail && <Check size={11} className="ml-auto" />}
                   </button>
                   {activeMembers.map((m) => (
@@ -487,7 +487,7 @@ export default function TaskDetail() {
               </label>
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-gray-500">Dibuat</span>
+                  <span className="text-gray-500">Created</span>
                   <span className="font-medium text-gray-700">
                     {new Date(task.created_at).toLocaleDateString("id-ID", {
                       day: "numeric",

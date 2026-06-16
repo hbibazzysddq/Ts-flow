@@ -9,11 +9,10 @@ export interface Board {
   isShared?: boolean;
 }
 
-export const getBoards = async () => {
-  const { data, error } = await supabase
-    .from("boards")
-    .select("*")
-    .order("created_at", { ascending: false });
+export const getBoards = async (userId?: string) => {
+  let query = supabase.from("boards").select("*").order("created_at", { ascending: false });
+  if (userId) query = query.eq("user_id", userId);
+  const { data, error } = await query;
   return { data, error };
 };
 

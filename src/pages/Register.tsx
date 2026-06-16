@@ -14,8 +14,8 @@ export default function Register() {
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
-    if (password !== confirmPassword) { setError('Password tidak cocok'); return }
-    if (password.length < 6) { setError('Password minimal 6 karakter'); return }
+    if (password !== confirmPassword) { setError('Passwords do not match'); return }
+    if (password.length < 6) { setError('Password must be at least 6 characters'); return }
     setLoading(true)
     const { error } = await register(email, password)
     if (error) { setError(error.message); setLoading(false); return }
@@ -40,8 +40,8 @@ export default function Register() {
         </div>
 
         <div className="bg-white border border-gray-200 rounded-2xl p-7 shadow-sm">
-          <h1 className="text-lg font-semibold text-gray-900 mb-1">Buat akun</h1>
-          <p className="text-sm text-gray-500 mb-6">Gratis selamanya, tanpa kartu kredit</p>
+          <h1 className="text-lg font-semibold text-gray-900 mb-1">Create account</h1>
+          <p className="text-sm text-gray-500 mb-6">Free forever, no credit card needed</p>
 
           {error && (
             <div className="bg-red-50 border border-red-100 text-red-600 text-xs px-3 py-2.5 rounded-lg mb-4">
@@ -54,7 +54,7 @@ export default function Register() {
               <label className="block text-xs font-medium text-gray-700 mb-1.5">Email</label>
               <input
                 type="email"
-                placeholder="nama@email.com"
+                placeholder="name@email.com"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
@@ -66,7 +66,7 @@ export default function Register() {
               <label className="block text-xs font-medium text-gray-700 mb-1.5">Password</label>
               <input
                 type="password"
-                placeholder="Min. 6 karakter"
+                placeholder="Min. 6 characters"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
@@ -75,7 +75,7 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1.5">Konfirmasi Password</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1.5">Confirm Password</label>
               <input
                 type="password"
                 placeholder="••••••••"
@@ -91,13 +91,13 @@ export default function Register() {
               disabled={loading}
               className="w-full py-2.5 px-4 bg-primary text-white text-sm font-medium rounded-lg hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {loading ? 'Mendaftar...' : 'Buat Akun'}
+              {loading ? 'Registering...' : 'Create Account'}
             </button>
           </form>
 
           <p className="text-center text-xs text-gray-500 mt-5">
-            Sudah punya akun?{' '}
-            <Link to="/login" className="text-primary font-medium hover:underline">Masuk</Link>
+            Already have an account?{' '}
+            <Link to="/login" className="text-primary font-medium hover:underline">Sign In</Link>
           </p>
         </div>
       </div>
