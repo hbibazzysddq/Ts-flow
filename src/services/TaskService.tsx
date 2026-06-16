@@ -10,6 +10,8 @@ export interface Task {
   order: number;
   assigned_to: string | null;
   assigned_email: string | null;
+  created_by: string | null;
+  created_by_email: string | null;
   created_at: string;
 }
 
@@ -23,9 +25,14 @@ export const getTasks = async (columnId: string) => {
 };
 
 export const createTask = async (column_id: string, title: string, order: number) => {
+  const { data: { user } } = await supabase.auth.getUser();
   const { data, error } = await supabase
     .from("tasks")
-    .insert({ column_id, title, order, priority: "low" })
+    .insert({
+      column_id, title, order, priority: "low",
+      created_by: user?.id ?? null,
+      created_by_email: user?.email ?? null,
+    })
     .select()
     .single();
   return { data, error };

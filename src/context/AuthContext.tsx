@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
 import supabase from "../services/Supabase"
 import type { User } from "@supabase/supabase-js"
-import { acceptPendingInvites } from "../services/CollabService"
 
 interface AuthContextType {
   user: User | null
@@ -23,19 +22,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const sessionUser = data.session?.user ?? null
       setUser(sessionUser)
       setLoading(false)
-      // Accept any pending invites for this user
-      if (sessionUser?.email) {
-        acceptPendingInvites(sessionUser.id, sessionUser.email)
-      }
     })
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       const sessionUser = session?.user ?? null
       setUser(sessionUser)
-      // Accept pending invites whenever auth state changes (login)
-      if (sessionUser?.email && _event === "SIGNED_IN") {
-        acceptPendingInvites(sessionUser.id, sessionUser.email)
-      }
     })
 
     return () => { listener?.subscription.unsubscribe() }
