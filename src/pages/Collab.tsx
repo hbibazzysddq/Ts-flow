@@ -30,14 +30,14 @@ function ManageMembersModal({ boardId, boardTitle, boardColor, onClose }: {
     if (!email.trim()) return;
     setErr(""); setSuccess("");
     if (email.toLowerCase() === user?.email?.toLowerCase()) {
-      setErr("Tidak bisa mengundang diri sendiri."); return;
+      setErr("Cannot invite yourself."); return;
     }
     const { error } = await invite.mutateAsync(email.trim());
     if (error) {
-      setErr(error.message.includes("unique") ? "Email sudah diundang." : error.message);
+      setErr(error.message.includes("unique") ? "Email already invited." : error.message);
       return;
     }
-    setSuccess(`Undangan dikirim ke ${email}`);
+    setSuccess(`Invitation sent to ${email}`);
     setEmail("");
     qc.invalidateQueries({ queryKey: ["own_boards_with_members"] });
   };
@@ -64,7 +64,7 @@ function ManageMembersModal({ boardId, boardTitle, boardColor, onClose }: {
         </div>
 
         <div className="p-5">
-          <p className="text-xs font-medium text-gray-600 mb-2">Undang anggota baru</p>
+          <p className="text-xs font-medium text-gray-600 mb-2">Invite new member</p>
           <div className="flex gap-2 mb-4">
             <input type="email" placeholder="email@contoh.com"
               value={email} onChange={e => setEmail(e.target.value)}
@@ -73,7 +73,7 @@ function ManageMembersModal({ boardId, boardTitle, boardColor, onClose }: {
               autoFocus />
             <button onClick={handleInvite} disabled={!email.trim() || invite.isPending}
               className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-indigo-600 disabled:opacity-50 transition-colors">
-              {invite.isPending ? "..." : "Undang"}
+              {invite.isPending ? "..." : "Invite"}
             </button>
           </div>
 
@@ -81,7 +81,7 @@ function ManageMembersModal({ boardId, boardTitle, boardColor, onClose }: {
           {success && <p className="text-xs text-green-600 bg-green-50 px-3 py-2 rounded-lg mb-3">✓ {success}</p>}
 
           <div className="flex items-center justify-between mb-2">
-            <p className="text-xs font-medium text-gray-600">Anggota ({activeCount})</p>
+            <p className="text-xs font-medium text-gray-600">Members ({activeCount})</p>
           </div>
           <div className="flex flex-col gap-1.5 max-h-56 overflow-y-auto">
             {members.map((m: any) => (
@@ -95,7 +95,7 @@ function ManageMembersModal({ boardId, boardTitle, boardColor, onClose }: {
                   <div className="min-w-0">
                     <p className="text-xs font-medium text-gray-800 truncate max-w-[160px]">{m.email}</p>
                     <p className="text-[11px] text-gray-400">
-                      {m.role === "owner" ? "Pemilik" : m.status === "pending" ? "Menunggu..." : "Anggota"}
+                      {m.role === "owner" ? "Owner" : m.status === "pending" ? "Pending..." : "Member"}
                     </p>
                   </div>
                 </div>
@@ -156,7 +156,7 @@ export default function Collab() {
             </button>
             <button onClick={() => navigate("/collab")}
               className="px-2.5 py-1.5 rounded-lg text-primary bg-primary/10 font-medium transition-colors">
-              Kolaborasi
+              Collaboration
             </button>
           </div>
         </div>
@@ -170,7 +170,7 @@ export default function Collab() {
           <button onClick={() => logout()}
             className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-900 px-2.5 py-1.5 rounded-lg hover:bg-gray-100 transition-colors">
             <LogOut size={13} />
-            <span className="hidden sm:inline">Keluar</span>
+            <span className="hidden sm:inline">Sign Out</span>
           </button>
         </div>
       </nav>
@@ -179,8 +179,8 @@ export default function Collab() {
         {/* Header */}
         <div className="flex items-end justify-between mb-8">
           <div>
-            <p className="text-sm text-gray-500 mb-0.5">Kolaborasi</p>
-            <h1 className="text-2xl font-bold text-gray-900">Pusat Kolaborasi</h1>
+            <p className="text-sm text-gray-500 mb-0.5">Collaboration</p>
+            <h1 className="text-2xl font-bold text-gray-900">Collaboration Hub</h1>
           </div>
         </div>
 
@@ -189,8 +189,8 @@ export default function Collab() {
           <div className="grid grid-cols-3 gap-3 mb-8">
             {[
               { label: "Board", value: ownBoards?.length ?? 0, icon: LayoutGrid, color: "text-indigo-500" },
-              { label: "Anggota aktif", value: totalMembers, icon: Users, color: "text-emerald-500" },
-              { label: "Undangan pending", value: totalPending, icon: Send, color: "text-amber-500" },
+              { label: "Active members", value: totalMembers, icon: Users, color: "text-emerald-500" },
+              { label: "Pending invites", value: totalPending, icon: Send, color: "text-amber-500" },
             ].map(s => (
               <div key={s.label} className="bg-white border border-gray-200 rounded-xl px-4 py-3.5">
                 <div className="flex items-center gap-2 mb-1">
@@ -225,24 +225,24 @@ export default function Collab() {
             <div className="w-14 h-14 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center mb-4">
               <Users size={22} className="text-gray-400" />
             </div>
-            <p className="text-sm font-semibold text-gray-900 mb-1">Belum ada board</p>
+            <p className="text-sm font-semibold text-gray-900 mb-1">No boards yet</p>
             <p className="text-sm text-gray-500 mb-6 max-w-xs leading-relaxed">
-              Buat board terlebih dahulu untuk mulai berkolaborasi dengan tim.
+              Create a board first to start collaborating with your team.
             </p>
             <button onClick={() => navigate("/")}
               className="flex items-center gap-1.5 bg-primary hover:bg-indigo-600 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors">
               <LayoutGrid size={14} />
-              Ke Dashboard
+              Go to Dashboard
             </button>
           </div>
         )}
 
-        {/* Board Saya section */}
+        {/* My Boards section */}
         {!loadingOwn && ownBoards != null && (ownBoards as any[]).length > 0 && (
           <>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-semibold text-gray-700">Board Saya</h2>
-              <span className="text-xs text-gray-400">{(ownBoards as any[]).length} board</span>
+              <h2 className="text-sm font-semibold text-gray-700">My Boards</h2>
+              <span className="text-xs text-gray-400">{(ownBoards as any[]).length} boards</span>
             </div>
             <div className="flex flex-col gap-3 mb-8">
               {(ownBoards as any[])?.map((board: any) => {
@@ -275,7 +275,7 @@ export default function Collab() {
                                 )}
                               </div>
                               <span className="text-[11px] text-gray-400">
-                                {activeMembers.length} anggota
+                                {activeMembers.length} members
                                 {pendingCount > 0 && ` · ${pendingCount} pending`}
                               </span>
                             </div>
@@ -284,7 +284,7 @@ export default function Collab() {
                         <button onClick={() => setManageBoard({ id: board.id, title: board.title, color: board.color })}
                           className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-900 px-3 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex-shrink-0">
                           <UserPlus size={13} />
-                          <span className="hidden sm:inline">Kelola</span>
+                          <span className="hidden sm:inline">Manage</span>
                         </button>
                       </div>
                     </div>
@@ -299,7 +299,7 @@ export default function Collab() {
         {!loadingShared && sharedBoards != null && (sharedBoards as any[]).length > 0 && (
           <>
             <div className="flex items-center gap-2 mb-4">
-              <h2 className="text-sm font-semibold text-gray-700">Diundang</h2>
+              <h2 className="text-sm font-semibold text-gray-700">Collaborations</h2>
               <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md flex items-center gap-1">
                 <Users size={10} /> {(sharedBoards as any[]).length}
               </span>
@@ -321,7 +321,7 @@ export default function Collab() {
                     </div>
                     <h3 className="text-sm font-semibold text-gray-900 mb-2 truncate">{board.title}</h3>
                     <div className="flex items-center justify-between pt-2 border-t border-gray-100">
-                      <span className="text-xs text-gray-400">Anggota</span>
+                      <span className="text-xs text-gray-400">Members</span>
                       <ExternalLink size={12} className="text-gray-300 group-hover:text-primary transition-colors" />
                     </div>
                   </div>
@@ -331,11 +331,11 @@ export default function Collab() {
           </>
         )}
 
-        {/* Undangan untuk Saya (Accept/Decline) */}
+        {/* My Invitations (Accept/Decline) */}
         {!loadingMyInvites && myInvites != null && (myInvites as any[]).length > 0 && (
           <>
             <div className="flex items-center gap-2 mb-4">
-              <h2 className="text-sm font-semibold text-gray-700">Undangan untuk Saya</h2>
+              <h2 className="text-sm font-semibold text-gray-700">My Invitations</h2>
               <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md flex items-center gap-1">
                 <Mail size={10} /> {(myInvites as any[]).length}
               </span>
@@ -356,7 +356,7 @@ export default function Collab() {
                         <p className="text-sm font-semibold text-gray-900 truncate">{boardInfo.title ?? "Board"}</p>
                         <div className="flex items-center gap-1.5 text-xs text-gray-400">
                           <Users size={10} />
-                          <span>Kamu diundang untuk bergabung</span>
+                          <span>You're invited to collaborate</span>
                         </div>
                       </div>
                     </div>
@@ -365,13 +365,13 @@ export default function Collab() {
                         disabled={isAccepting || isDeclining}
                         className="flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg hover:bg-emerald-100 disabled:opacity-50 transition-colors">
                         <Check size={12} />
-                        {isAccepting ? "..." : "Terima"}
+                        {isAccepting ? "..." : "Accept"}
                       </button>
                       <button onClick={() => declineInvite.mutateAsync(inv.id)}
                         disabled={isAccepting || isDeclining}
                         className="flex items-center gap-1 text-xs font-medium text-red-600 bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg hover:bg-red-100 disabled:opacity-50 transition-colors">
                         <X size={12} />
-                        {isDeclining ? "..." : "Tolak"}
+                        {isDeclining ? "..." : "Decline"}
                       </button>
                     </div>
                   </div>
@@ -385,7 +385,7 @@ export default function Collab() {
         {!loadingPending && totalPending > 0 && (
           <>
             <div className="flex items-center gap-2 mb-4">
-              <h2 className="text-sm font-semibold text-gray-700">Undangan Tertunda</h2>
+              <h2 className="text-sm font-semibold text-gray-700">Pending Invitations</h2>
               <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md flex items-center gap-1">
                 <Clock size={10} /> {totalPending}
               </span>
@@ -402,13 +402,13 @@ export default function Collab() {
                       <p className="text-sm font-medium text-gray-800 truncate">{inv.email}</p>
                       <div className="flex items-center gap-1.5 text-xs text-gray-400">
                         <Mail size={10} />
-                        <span>Diundang ke </span>
+                        <span>Collab · </span>
                         <span className="font-medium text-gray-600 truncate max-w-[120px]">{(inv as any).boards?.title ?? "Board"}</span>
                       </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <span className="text-[11px] text-amber-600 bg-amber-50 px-2 py-1 rounded-md">Menunggu</span>
+                    <span className="text-[11px] text-amber-600 bg-amber-50 px-2 py-1 rounded-md">Pending</span>
                   </div>
                 </div>
               ))}

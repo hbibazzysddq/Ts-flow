@@ -5,9 +5,9 @@ import { useAuth } from "../context/AuthContext"
 export const useBoards = () => {
   const { user } = useAuth()
   return useQuery({
-    queryKey: ["boards"],
+    queryKey: ["boards", user?.id],
     queryFn: async () => {
-      const { data, error } = await getBoards()
+      const { data, error } = await getBoards(user!.id)
       if (error) throw error
       return data ?? []
     },

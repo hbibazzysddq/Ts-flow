@@ -46,11 +46,11 @@ function InviteModal({ boardId, onClose }: { boardId: string; onClose: () => voi
     if (!email.trim()) return;
     setErr(""); setSuccess("");
     if (email.toLowerCase() === user?.email?.toLowerCase()) {
-      setErr("Tidak bisa mengundang diri sendiri."); return;
+      setErr("Cannot invite yourself."); return;
     }
     const { error } = await invite.mutateAsync(email.trim());
-    if (error) { setErr(error.message.includes("unique") ? "Email sudah diundang." : error.message); return; }
-    setSuccess(`Undangan dikirim ke ${email}`);
+    if (error) { setErr(error.message.includes("unique") ? "Email already invited." : error.message); return; }
+    setSuccess(`Invitation sent to ${email}`);
     setEmail("");
   };
 
@@ -63,7 +63,7 @@ function InviteModal({ boardId, onClose }: { boardId: string; onClose: () => voi
         <div className="flex items-center justify-between p-5 border-b border-gray-100">
           <div className="flex items-center gap-2">
             <Users size={16} className="text-primary" />
-            <h2 className="text-sm font-semibold text-gray-900">Anggota Board</h2>
+            <h2 className="text-sm font-semibold text-gray-900">Board Members</h2>
           </div>
           <button onClick={onClose} className="p-1 rounded-lg text-gray-400 hover:bg-gray-100 transition-colors">
             <X size={15} />
@@ -72,11 +72,11 @@ function InviteModal({ boardId, onClose }: { boardId: string; onClose: () => voi
 
         <div className="p-5">
           {/* Invite input */}
-          <p className="text-xs font-medium text-gray-600 mb-2">Undang lewat email</p>
+          <p className="text-xs font-medium text-gray-600 mb-2">Invite via email</p>
           <div className="flex gap-2 mb-4">
             <input
               type="email"
-              placeholder="email@contoh.com"
+              placeholder="email@example.com"
               value={email}
               onChange={e => setEmail(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleInvite()}
@@ -88,7 +88,7 @@ function InviteModal({ boardId, onClose }: { boardId: string; onClose: () => voi
               disabled={!email.trim() || invite.isPending}
               className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-indigo-600 disabled:opacity-50 transition-colors"
             >
-              {invite.isPending ? "..." : "Undang"}
+              {invite.isPending ? "..." : "Invite"}
             </button>
           </div>
 
@@ -97,7 +97,7 @@ function InviteModal({ boardId, onClose }: { boardId: string; onClose: () => voi
 
           {/* Members list */}
           <p className="text-xs font-medium text-gray-600 mb-2">
-            Anggota saat ini ({members?.length ?? 0})
+            Members ({members?.length ?? 0})
           </p>
           <div className="flex flex-col gap-1.5 max-h-52 overflow-y-auto">
             {members?.map(m => (
@@ -111,7 +111,7 @@ function InviteModal({ boardId, onClose }: { boardId: string; onClose: () => voi
                   <div>
                     <p className="text-xs font-medium text-gray-800 truncate max-w-[180px]">{m.email}</p>
                     <p className="text-[11px] text-gray-400">
-                      {m.role === "owner" ? "Pemilik" : m.status === "pending" ? "Menunggu..." : "Anggota"}
+                      {m.role === "owner" ? "Owner" : m.status === "pending" ? "Pending..." : "Member"}
                     </p>
                   </div>
                 </div>
@@ -127,7 +127,7 @@ function InviteModal({ boardId, onClose }: { boardId: string; onClose: () => voi
             ))}
             {(members?.length ?? 0) === 0 && (
               <p className="text-xs text-gray-400 text-center py-4">
-                Belum ada anggota lain
+                No other members yet
               </p>
             )}
           </div>
@@ -259,8 +259,8 @@ function KanbanColumn({ column, tasks, accent, onDeleteColumn, onNavigate, onDel
           ))}
           {tasks.length === 0 && (
             <div className="flex flex-col items-center justify-center py-6 text-center">
-              <p className="text-xs text-gray-400">Belum ada task</p>
-              <p className="text-[11px] text-gray-300 mt-0.5">Drag task ke sini atau klik tambah</p>
+              <p className="text-xs text-gray-400">No tasks yet</p>
+              <p className="text-[11px] text-gray-300 mt-0.5">Drag tasks here or click to add</p>
             </div>
           )}
         </div>
@@ -270,7 +270,7 @@ function KanbanColumn({ column, tasks, accent, onDeleteColumn, onNavigate, onDel
       <div className="px-2 pb-2">
         {showInput ? (
           <div className="bg-white border border-indigo-300 rounded-xl p-2.5 shadow-sm">
-            <textarea placeholder="Nama task..." value={taskTitle}
+            <textarea placeholder="Task name..." value={taskTitle}
               onChange={e => setTaskTitle(e.target.value)}
               onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleCreate(); } if (e.key === "Escape") setShowInput(false); }}
               rows={2} autoFocus
@@ -278,7 +278,7 @@ function KanbanColumn({ column, tasks, accent, onDeleteColumn, onNavigate, onDel
             <div className="flex items-center gap-1.5 mt-2">
               <button onClick={handleCreate} disabled={!taskTitle.trim() || isCreating}
                 className="px-3 py-1.5 bg-primary text-white text-xs font-medium rounded-lg hover:bg-indigo-600 disabled:opacity-50 transition-colors">
-                {isCreating ? "..." : "Tambah"}
+                {isCreating ? "..." : "Add"}
               </button>
               <button onClick={() => { setShowInput(false); setTaskTitle(""); }}
                 className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
@@ -290,7 +290,7 @@ function KanbanColumn({ column, tasks, accent, onDeleteColumn, onNavigate, onDel
           <button onClick={() => setShowInput(true)}
             className="w-full flex items-center gap-1.5 px-2.5 py-2 text-xs text-gray-400 hover:text-gray-700 hover:bg-white border border-dashed border-gray-200 hover:border-gray-300 rounded-lg transition-all">
             <Plus size={12} strokeWidth={2.5} />
-            Tambah task
+            Add task
           </button>
         )}
       </div>
@@ -379,7 +379,7 @@ export default function Board() {
   };
 
   const handleDeleteColumn = async (colId: string) => {
-    if (confirm("Hapus kolom ini?")) deleteColumn.mutateAsync(colId);
+    if (confirm("Delete this column?")) deleteColumn.mutateAsync(colId);
   };
 
   const handleCreateTask = async (colId: string, title: string, order: number) => {
@@ -389,7 +389,7 @@ export default function Board() {
   };
 
   const handleDeleteTask = async (colId: string, taskId: string) => {
-    if (confirm("Hapus task ini?")) {
+    if (confirm("Delete this task?")) {
       const { deleteTask } = await import("../services/TaskService");
       await deleteTask(taskId);
       qc.invalidateQueries({ queryKey: ["tasks", colId] });

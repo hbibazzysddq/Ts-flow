@@ -39,18 +39,18 @@ export default function Login() {
           </div>
 
           <h2 className="text-2xl font-semibold text-gray-900 mb-3 leading-snug">
-            Kelola pekerjaan<br />dengan lebih baik
+            Manage work<br />better
           </h2>
           <p className="text-sm text-gray-500 mb-10 leading-relaxed">
-            Visualisasikan tugas, pantau progres, dan selesaikan pekerjaan lebih cepat.
+            Visualize tasks, track progress, and get work done faster.
           </p>
 
           {/* Feature list */}
           <div className="flex flex-col gap-4">
             {[
-              { icon: "📋", title: "Kanban Board", desc: "Atur tugas dalam kolom yang fleksibel" },
-              { icon: "🔀", title: "Drag & Drop", desc: "Pindahkan task dengan mudah antar kolom" },
-              { icon: "🏷️", title: "Prioritas & Deadline", desc: "Tandai urgensi dan batas waktu tiap tugas" },
+              { icon: "📋", title: "Kanban Board", desc: "Organize tasks in flexible columns" },
+              { icon: "🔀", title: "Drag & Drop", desc: "Move tasks easily between columns" },
+              { icon: "🏷️", title: "Priorities & Deadlines", desc: "Mark urgency and deadlines for each task" },
             ].map(f => (
               <div key={f.title} className="flex items-start gap-3">
                 <span className="text-lg leading-5">{f.icon}</span>
@@ -84,8 +84,8 @@ export default function Login() {
           </div>
 
           <div className="bg-white border border-gray-200 rounded-2xl p-7 shadow-sm">
-            <h1 className="text-xl font-semibold text-gray-900 mb-1">Masuk</h1>
-            <p className="text-sm text-gray-500 mb-6">Masuk ke akun kamu untuk melanjutkan</p>
+            <h1 className="text-xl font-semibold text-gray-900 mb-1">Sign In</h1>
+            <p className="text-sm text-gray-500 mb-6">Sign in to your account to continue</p>
 
             {error && (
               <div className="bg-red-50 border border-red-100 text-red-600 text-xs px-3 py-2.5 rounded-lg mb-4 flex items-center gap-2">
@@ -97,7 +97,7 @@ export default function Login() {
             <form onSubmit={handleLogin} className="flex flex-col gap-4">
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1.5">Email</label>
-                <input type="email" placeholder="nama@email.com" value={email} onChange={e => setEmail(e.target.value)} required
+                <input type="email" placeholder="name@email.com" value={email} onChange={e => setEmail(e.target.value)} required
                   className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
               </div>
               <div>
@@ -109,13 +109,13 @@ export default function Login() {
               </div>
               <button type="submit" disabled={loading}
                 className="w-full py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-                {loading ? 'Masuk...' : 'Masuk'}
+                {loading ? 'Signing in...' : 'Sign In'}
               </button>
             </form>
 
             <div className="flex items-center gap-3 my-4">
               <div className="flex-1 h-px bg-gray-100" />
-              <span className="text-xs text-gray-400">atau</span>
+              <span className="text-xs text-gray-400">or</span>
               <div className="flex-1 h-px bg-gray-100" />
             </div>
 
@@ -127,12 +127,12 @@ export default function Login() {
                 <path fill="#FBBC04" d="M19.82 20.41A11.96 11.96 0 0 0 23.25 12c0-.75-.07-1.48-.21-2.19H12v4.44h6.34a5.44 5.44 0 0 1-2.3 3.56l3.78 2.6Z"/>
                 <path fill="#4285F4" d="M5.28 14.7A7.24 7.24 0 0 1 4.75 12c0-.93.16-1.83.45-2.67L1.73 7.5A11.93 11.93 0 0 0 .75 12c0 1.63.33 3.19.93 4.6l3.6-1.9Z"/>
               </svg>
-              Lanjutkan dengan Google
+              Continue with Google
             </button>
 
             <p className="text-center text-xs text-gray-500 mt-5">
-              Belum punya akun?{' '}
-              <Link to="/register" className="text-primary font-medium hover:underline">Daftar gratis</Link>
+              Don't have an account?{' '}
+              <Link to="/register" className="text-primary font-medium hover:underline">Sign up free</Link>
             </p>
           </div>
         </div>
