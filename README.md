@@ -1,100 +1,91 @@
-# 🌊 TaskFlow - Modern Kanban Board
+# TaskFlow — Modern Kanban Board
 
-TaskFlow adalah aplikasi manajemen tugas (Kanban) yang modern, bersih, dan responsif. Dibangun dengan **React**, **Tailwind CSS**, dan **Supabase**, aplikasi ini mendukung kolaborasi tim secara real-time.
+TaskFlow is a modern, clean, and performant Kanban board built with **React**, **TypeScript**, **Tailwind CSS v4**, and **Supabase**. It brings the power of visual task management with real-time team collaboration — think Trello, but self-hosted and lightweight.
 
 ---
 
-## ✨ Fitur Utama
+## Why TaskFlow?
 
-- 📋 **Multipel Board**: Buat board berbeda untuk berbagai proyek.
-- 🔄 **Drag & Drop**: Pindahkan tugas antar kolom dengan mulus menggunakan `@dnd-kit`.
-- 🤝 **Kolaborasi Tim**: Undang anggota tim lewat email untuk bekerja di board yang sama.
-- ⚡ **Real-time Update**: Lihat perubahan tugas, komentar, dan pergerakan secara instan tanpa refresh.
-- 💬 **Diskusi Tugas**: Berikan komentar dan diskusi langsung di setiap kartu tugas.
-- 🎯 **Penugasan (Assignee)**: Tugaskan tugas ke anggota tim tertentu.
-- 🔴 **Prioritas & Deadline**: Atur tingkat kepentingan dan batas waktu tugas.
-- 🔐 **Autentikasi Aman**: Login/Register menggunakan email atau Google OAuth.
+| Advantage | What it means for you |
+|---|---|
+| **Real-time everything** | Tasks, comments, assignments — updates appear instantly across all connected users via Supabase Realtime. No page refresh needed. |
+| **Team collaboration** | Invite members by email, assign tasks to specific people, and discuss work in task-level comments. |
+| **Responsive & clean UI** | Works beautifully on desktop and mobile. No bloat, no clutter. |
+| **Drag & drop** | Move tasks between columns seamlessly with `@dnd-kit`. Smooth, intuitive, fast. |
+| **Priorities & deadlines** | Mark urgency (Low / Medium / High) and set due dates to keep work on track. |
+| **Secure by default** | Row-Level Security (RLS) ensures users only see boards they own or have been invited to. |
+| **Free & self-hosted** | Powered by Supabase's generous free tier. No subscription lock-in. |
+
+---
+
+## ✨ Features
+
+- **Multiple boards** — Create separate boards for different projects
+- **Kanban columns** — Add, rename, delete, and reorder columns
+- **Drag & drop tasks** — Move tasks within and across columns
+- **Team collaboration** — Invite members via email; accept or decline invitations
+- **Task comments** — Discuss work directly on each task card
+- **Assignee** — Assign tasks to specific team members
+- **Priority labels** — Low / Medium / High with color-coded badges
+- **Deadlines** — Set due dates with visual indicators
+- **Task detail page** — Full-screen editor for title, description, priority, deadline, assignee, and comments
+- **Real-time sync** — Live updates for tasks, columns, comments, and member changes
+- **Bell notifications** — Pending invitation badge and modal in the navbar
+- **Google OAuth** — Sign in with Google in one click
+- **Collaboration Hub** — Dedicated page to manage boards, members, and invitations
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Vite, React (TypeScript)
-- **Styling**: Tailwind CSS v4
-- **State Management**: TanStack Query (React Query)
-- **Backend & Auth**: Supabase
-- **Icons**: Lucide React
-- **Drag & Drop**: @dnd-kit
+| Layer | Technology |
+|---|---|
+| Frontend | Vite + React (TypeScript) |
+| Styling | Tailwind CSS v4 |
+| State & Data | TanStack Query (React Query) |
+| Backend & Auth | Supabase (PostgreSQL, Auth, Realtime) |
+| Icons | Lucide React |
+| Drag & Drop | @dnd-kit |
 
 ---
 
-## 🚀 Cara Setup & Instalasi
+## 🚀 Quick Start
 
-Ikuti langkah-langkah detail ini untuk menjalankan project di lokal Anda:
+### Prerequisites
+- [Bun](https://bun.sh/) (or Node.js 18+)
 
-### 1. Persiapan Awal
-Pastikan Anda memiliki [Bun](https://bun.sh/) atau [Node.js](https://nodejs.org/) terinstal di komputer Anda.
-
-### 2. Instalasi Dependensi
-Jalankan perintah berikut di terminal:
+### 1. Install dependencies
 ```bash
 bun install
-# atau jika menggunakan npm
-npm install
 ```
 
-### 3. Konfigurasi Environment Variables
-Buat file bernama `.env` di root direktori project, lalu isi dengan kredensial Supabase Anda:
+### 2. Configure environment
+Create a `.env` file in the project root:
 ```env
-VITE_SUPABASE_URL=https://url-project-anda.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
 ```
 
----
+### 3. Set up the database
+Run the SQL from `SUPABASE_SETUP.md` in Supabase SQL Editor. This creates all required tables, RLS policies, and helper functions.
 
-## 🏗️ Setup Database (Supabase)
-
-Aplikasi ini membutuhkan skema database tertentu untuk fitur kolaborasi.
-
-1.  **Buat Project Baru** di [Supabase Dashboard](https://supabase.com).
-2.  **Jalankan SQL**: Buka menu **SQL Editor**, lalu jalankan kode SQL yang ada di file `SUPABASE_SETUP.md`.
-    *   *Langkah ini akan membuat tabel: `boards`, `columns`, `tasks`, `board_members`, dan `task_comments`.*
-    *   *Secara otomatis mengaktifkan Row Level Security (RLS) untuk keamanan data.*
-3.  **Aktifkan Realtime**: Di Dashboard Supabase, buka **Database** > **Replication**, lalu aktifkan (enable) tabel-tabel utama (`tasks`, `columns`, `board_members`, `task_comments`) pada publikasi `supabase_realtime`.
-
----
-
-## 💻 Menjalankan Aplikasi
-
-Setelah setup selesai, jalankan server pengembangan:
+### 4. Start the dev server
 ```bash
 bun dev
-# atau
-npm run dev
 ```
-Buka [http://localhost:5173](http://localhost:5173) di browser Anda.
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 
-## 📂 Struktur Project
+## 🏗️ Project Structure
 
-```text
+```
 src/
-├── context/      # AuthContext untuk manajemen user
-├── hooks/        # Custom hooks (React Query) untuk data fetching
-├── pages/        # Halaman utama (Dashboard, Board, TaskDetail, Auth)
-├── services/     # API Service untuk komunikasi dengan Supabase
-└── components/   # Komponen UI yang reusable
+├── context/       # AuthContext — user session management
+├── hooks/         # Custom hooks using TanStack Query
+├── pages/         # Dashboard, Board, TaskDetail, Collaboration, Auth
+├── services/      # Supabase API layer
+└── components/    # Reusable UI components
 ```
 
 ---
-
-## 📝 Catatan Sesuai Permintaan User
-Aplikasi ini sudah dioptimasi agar:
-- UI Clean & Minimalis (Tidak lebay, tapi tidak kosong).
-- Responsif (Bagus di Desktop maupun Mobile).
-- Aman dengan RLS (User hanya bisa akses board miliknya atau board di mana dia diundang).
-
----
-
-Dibuat dengan ❤️ oleh Antigravity.
