@@ -5,6 +5,7 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Board from './pages/Board'
 import TaskDetail from './pages/TaskDetail'
+import Collab from './pages/Collab'
 import { useAuth } from './context/AuthContext'
 
 function LoadingScreen() {
@@ -53,6 +54,7 @@ export default function App() {
       <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
       <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
       <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/collab" element={<ProtectedRoute><Collab /></ProtectedRoute>} />
       <Route path="/board/:id" element={<ProtectedRoute><Board /></ProtectedRoute>} />
       <Route path="/task/:id" element={<ProtectedRoute><TaskDetail /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />

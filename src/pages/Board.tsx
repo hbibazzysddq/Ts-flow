@@ -172,13 +172,18 @@ function SortableTaskCard({ task, onDelete, onClick }: {
               {isOverdue ? "Overdue · " : ""}{new Date(task.deadline).toLocaleDateString("id-ID", { day: "numeric", month: "short" })}
             </span>
           )}
-          {task.assigned_email && (
-            <span className="ml-auto flex items-center">
-              <span className="w-5 h-5 rounded-full bg-indigo-100 text-primary text-[10px] font-bold flex items-center justify-center" title={task.assigned_email}>
+          <span className="ml-auto flex items-center gap-1">
+            {task.created_by_email && (
+              <span className="w-5 h-5 rounded-full bg-gray-100 text-gray-500 text-[9px] font-bold flex items-center justify-center" title={`Dibuat oleh ${task.created_by_email}`}>
+                {avatarInitial(task.created_by_email)}
+              </span>
+            )}
+            {task.assigned_email && (
+              <span className="w-5 h-5 rounded-full bg-indigo-100 text-primary text-[10px] font-bold flex items-center justify-center" title={`Dikerjakan oleh ${task.assigned_email}`}>
                 {avatarInitial(task.assigned_email)}
               </span>
-            </span>
-          )}
+            )}
+          </span>
         </div>
       </div>
 

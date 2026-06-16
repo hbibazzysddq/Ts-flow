@@ -2,8 +2,9 @@ import { useState, useMemo } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useBoards, useCreateBoards, useDeleteBoards, useSharedBoards } from "../hooks/useBoards";
+import { usePendingInvitesForUser, useAcceptInvite, useDeclineInvite } from "../hooks/useCollab";
 import { type Board } from "../services/BoardService";
-import { LogOut, Plus, Trash2, LayoutGrid, Calendar, ArrowRight, Users } from "lucide-react";
+import { LogOut, Plus, Trash2, LayoutGrid, Calendar, ArrowRight, Users, Mail, Check, X, Bell } from "lucide-react";
 
 const COLORS = ["#6366f1","#ec4899","#f59e0b","#10b981","#3b82f6","#8b5cf6","#ef4444","#06b6d4"];
 const COLOR_NAMES = ["Indigo","Pink","Amber","Emerald","Blue","Violet","Red","Cyan"];
@@ -71,15 +72,96 @@ function BoardCard({ board, onOpen, onDelete, shared }: {
   );
 }
 
+// ── Invitation Modal ────────────────────────────────────────────
+function InvitationModal({ onClose }: { onClose: () => void }) {
+  const { data: myInvites } = usePendingInvitesForUser();
+  const acceptInvite = useAcceptInvite();
+  const declineInvite = useDeclineInvite();
+  const invites = (myInvites as any[]) ?? [];
+
+  return (
+    <div className="fixed inset-0 bg-black/25 flex items-center justify-center z-50 p-4"
+      onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="bg-white rounded-2xl w-full max-w-md shadow-xl border border-gray-200 fade-in">
+        <div className="flex items-center justify-between p-5 border-b border-gray-100">
+          <div className="flex items-center gap-2">
+            <Bell size={16} className="text-primary" />
+            <h2 className="text-sm font-semibold text-gray-900">Undangan</h2>
+            {invites.length > 0 && (
+              <span className="text-[11px] text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md">
+                {invites.length} baru
+              </span>
+            )}
+          </div>
+          <button onClick={onClose} className="p-1 rounded-lg text-gray-400 hover:bg-gray-100 transition-colors">
+            <X size={15} />
+          </button>
+        </div>
+
+        <div className="p-5">
+          {invites.length === 0 && (
+            <div className="flex flex-col items-center py-8 text-center">
+              <Bell size={28} className="text-gray-300 mb-3" />
+              <p className="text-sm font-medium text-gray-900 mb-1">Tidak ada undangan</p>
+              <p className="text-xs text-gray-500">Kamu akan melihat undangan board di sini.</p>
+            </div>
+          )}
+          <div className="flex flex-col gap-3 max-h-80 overflow-y-auto">
+            {invites.map((inv: any) => {
+              const boardInfo = inv.boards ?? {};
+              const isPending = acceptInvite.isPending || declineInvite.isPending;
+              return (
+                <div key={inv.id}
+                  className="border border-gray-100 bg-gray-50 rounded-xl px-4 py-3.5 flex items-center justify-between">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${boardInfo.color ?? "#6366f1"}18` }}>
+                      <div className="w-4 h-4 rounded-sm" style={{ background: boardInfo.color ?? "#6366f1" }} />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 truncate">{boardInfo.title ?? "Board"}</p>
+                      <div className="flex items-center gap-1 text-xs text-gray-400">
+                        <Mail size={10} />
+                        <span>Kamu diundang sebagai anggota</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0 ml-3">
+                    <button onClick={() => acceptInvite.mutateAsync(inv.id).then(onClose)}
+                      disabled={isPending}
+                      className="flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg hover:bg-emerald-100 disabled:opacity-50 transition-colors">
+                      <Check size={12} />
+                      {acceptInvite.isPending ? "..." : "Terima"}
+                    </button>
+                    <button onClick={() => declineInvite.mutateAsync(inv.id)}
+                      disabled={isPending}
+                      className="flex items-center gap-1 text-xs font-medium text-red-600 bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg hover:bg-red-100 disabled:opacity-50 transition-colors">
+                      <X size={12} />
+                      {declineInvite.isPending ? "..." : "Tolak"}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { data: boards, isLoading } = useBoards();
   const { data: sharedBoards, isLoading: isLoadingShared } = useSharedBoards();
+  const { data: myInvites, isLoading: loadingMyInvites } = usePendingInvitesForUser();
+  const acceptInvite = useAcceptInvite();
+  const declineInvite = useDeclineInvite();
   const createBoards = useCreateBoards();
   const deleteBoards = useDeleteBoards();
 
   const [showModal, setShowModal] = useState(false);
+  const [showInvites, setShowInvites] = useState(false);
   const [title, setTitle] = useState("");
   const [color, setColor] = useState(COLORS[0]);
 
@@ -111,7 +193,22 @@ export default function Dashboard() {
           </div>
           <span className="text-sm font-semibold text-gray-900">TaskFlow</span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          <button onClick={() => setShowInvites(true)}
+            className="relative p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+            title="Undangan">
+            <Bell size={16} />
+            {myInvites != null && (myInvites as any[]).length > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center shadow-sm">
+                {(myInvites as any[]).length}
+              </span>
+            )}
+          </button>
+          <button onClick={() => navigate("/collab")}
+            className="hidden sm:flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-900 px-2.5 py-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+            <Users size={13} />
+            Kolaborasi
+          </button>
           <div className="hidden sm:flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5">
             <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary">
               {firstName.charAt(0).toUpperCase()}
@@ -157,6 +254,55 @@ export default function Dashboard() {
                 <p className="text-xl font-bold text-gray-900">{s.value}</p>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Pending Invitations for me */}
+        {!loadingMyInvites && myInvites != null && (myInvites as any[]).length > 0 && (
+          <div className="mb-8 fade-in">
+            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <Mail size={16} className="text-amber-600" />
+                <h2 className="text-sm font-semibold text-amber-900">Undangan Board</h2>
+                <span className="text-[11px] text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md">
+                  {(myInvites as any[]).length} baru
+                </span>
+              </div>
+              <div className="flex flex-col gap-3">
+                {(myInvites as any[])?.map((inv: any) => {
+                  const boardInfo = inv.boards ?? {};
+                  const isPending = acceptInvite.isPending || declineInvite.isPending;
+                  return (
+                    <div key={inv.id}
+                      className="bg-white border border-amber-100 rounded-xl px-4 py-3.5 flex items-center justify-between">
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${boardInfo.color ?? "#6366f1"}18` }}>
+                          <div className="w-4 h-4 rounded-sm" style={{ background: boardInfo.color ?? "#6366f1" }} />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-gray-900 truncate">{boardInfo.title ?? "Board"}</p>
+                          <p className="text-xs text-gray-500">Kamu diundang untuk bergabung sebagai anggota</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 flex-shrink-0 ml-3">
+                        <button onClick={() => acceptInvite.mutateAsync(inv.id)}
+                          disabled={isPending}
+                          className="flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg hover:bg-emerald-100 disabled:opacity-50 transition-colors">
+                          <Check size={12} />
+                          {acceptInvite.isPending ? "..." : "Terima"}
+                        </button>
+                        <button onClick={() => declineInvite.mutateAsync(inv.id)}
+                          disabled={isPending}
+                          className="flex items-center gap-1 text-xs font-medium text-red-600 bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg hover:bg-red-100 disabled:opacity-50 transition-colors">
+                          <X size={12} />
+                          {declineInvite.isPending ? "..." : "Tolak"}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         )}
 
@@ -308,6 +454,8 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+
+      {showInvites && <InvitationModal onClose={() => setShowInvites(false)} />}
     </div>
   );
 }
