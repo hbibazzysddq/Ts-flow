@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useAuth } from "../context/AuthContext"
 import { Link, useNavigate } from "react-router-dom"
+import { LayoutGrid, ArrowRight, Calendar } from "lucide-react"
 
 export default function Login() {
   const { login, loginGoogle } = useAuth()
@@ -48,22 +49,27 @@ export default function Login() {
           {/* Feature list */}
           <div className="flex flex-col gap-4">
             {[
-              { icon: "📋", title: "Kanban Board", desc: "Organize tasks in flexible columns" },
-              { icon: "🔀", title: "Drag & Drop", desc: "Move tasks easily between columns" },
-              { icon: "🏷️", title: "Priorities & Deadlines", desc: "Mark urgency and deadlines for each task" },
-            ].map(f => (
-              <div key={f.title} className="flex items-start gap-3">
-                <span className="text-lg leading-5">{f.icon}</span>
-                <div>
-                  <p className="text-sm font-medium text-gray-800">{f.title}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{f.desc}</p>
+              { icon: LayoutGrid, title: "Kanban Board", desc: "Organize tasks in flexible columns" },
+              { icon: ArrowRight, title: "Drag & Drop", desc: "Move tasks easily between columns" },
+              { icon: Calendar, title: "Priorities & Deadlines", desc: "Mark urgency and deadlines for each task" },
+            ].map(f => {
+              const Icon = f.icon;
+              return (
+                <div key={f.title} className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded flex items-center justify-center bg-primary/10 text-primary flex-shrink-0 mt-0.5">
+                    <Icon size={13} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-800">{f.title}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{f.desc}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
-        <p className="text-xs text-gray-400">© 2025 TaskFlow</p>
+        <p className="text-xs text-gray-400">© 2026 TaskFlow</p>
       </div>
 
       {/* Right panel – form */}

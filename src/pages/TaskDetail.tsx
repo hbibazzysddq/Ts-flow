@@ -100,7 +100,7 @@ export default function TaskDetail() {
     setInitialized(true);
   }
 
-  const { data: comments } = useComments(id!);
+  const { data: comments, isLoading: commentsLoading } = useComments(id!);
   const addComment = useAddComment(id!);
   const deleteComment = useDeleteComment(id!);
 
@@ -198,7 +198,23 @@ export default function TaskDetail() {
     );
   }
 
-  if (!task) return null;
+  if (!task) return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center fade-in">
+        <div className="w-14 h-14 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center mx-auto mb-4">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <p className="text-sm font-semibold text-gray-900 mb-1">Task not found</p>
+        <p className="text-xs text-gray-500 mb-6">This task may have been deleted.</p>
+        <button onClick={() => navigate(-1)}
+          className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-indigo-600 transition-colors">
+          Go back
+        </button>
+      </div>
+    </div>
+  );
 
   const activeMembers = members?.filter((m) => m.status === "active") ?? [];
 
@@ -282,7 +298,16 @@ export default function TaskDetail() {
 
               {/* Comment list */}
               <div className="max-h-72 overflow-y-auto px-4 py-3 flex flex-col gap-4">
-                {comments?.length === 0 && (
+                {commentsLoading && (
+                  <div className="flex items-center justify-center py-6">
+                    <div className="flex gap-1">
+                      {[0, 1, 2].map(i => (
+                        <div key={i} className="w-1.5 h-1.5 rounded-full bg-gray-300 animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {!commentsLoading && comments?.length === 0 && (
                   <p className="text-xs text-gray-400 text-center py-4">
                     No comments yet
                   </p>
@@ -345,21 +370,13 @@ export default function TaskDetail() {
               </div>
             </div>
 
-            {/* Save button */}
-            <button
-              onClick={handleSave}
-              disabled={updateTask.isPending}
-              className="w-full py-2.5 bg-primary hover:bg-indigo-600 text-white text-sm font-medium rounded-xl disabled:opacity-50 transition-colors"
-            >
-              {updateTask.isPending ? "Saving..." : "Save Changes"}
-            </button>
           </div>
 
           {/* Right – meta sidebar */}
           <div className="mt-5 lg:mt-0 space-y-4">
             {/* Priority */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+              <label className="block text-xs font-semibold text-gray-500 mb-3">
                 Priority
               </label>
               <div className="flex flex-col gap-1.5">
@@ -389,7 +406,7 @@ export default function TaskDetail() {
 
             {/* Deadline */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+              <label className="block text-xs font-semibold text-gray-500 mb-3">
                 Deadline
               </label>
               <input
@@ -428,7 +445,7 @@ export default function TaskDetail() {
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center gap-1.5 mb-3">
                   <UserCheck size={13} className="text-gray-400" />
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  <label className="text-xs font-semibold text-gray-500">
                     Assigned to
                   </label>
                 </div>
@@ -482,7 +499,7 @@ export default function TaskDetail() {
 
             {/* Meta */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+              <label className="block text-xs font-semibold text-gray-500 mb-3">
                 Info
               </label>
               <div className="space-y-2">

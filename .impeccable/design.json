@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-17T11:43:00+07:00",
+  "title": "Design System: TaskFlow",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Playful Indigo", "canonical": "#6366f1", "tonalRamp": ["#1e1b4b", "#312e81", "#3730a3", "#4338ca", "#4f46e5", "#6366f1", "#818cf8", "#a5b4fc", "#c7d2fe", "#e0e7ff", "#eef2ff"] },
+      "neutral-bg": { "role": "neutral", "displayName": "Body Background", "canonical": "#f9fafb", "tonalRamp": ["#030712", "#111827", "#1f2937", "#374151", "#4b5563", "#6b7280", "#9ca3af", "#d1d5db", "#e5e7eb", "#f3f4f6", "#f9fafb"] },
+      "neutral-surface": { "role": "neutral", "displayName": "Surface", "canonical": "#ffffff", "tonalRamp": ["#ffffff"] },
+      "neutral-border": { "role": "neutral", "displayName": "Border", "canonical": "#e5e7eb", "tonalRamp": ["#e5e7eb"] },
+      "priority-high-text": { "role": "semantic", "displayName": "High Priority", "canonical": "#e11d48", "tonalRamp": ["#881337", "#9f1239", "#be123c", "#e11d48", "#fb7185", "#fda4af", "#fecdd3", "#ffe4e6", "#fff1f2"] },
+      "priority-medium-text": { "role": "semantic", "displayName": "Medium Priority", "canonical": "#ca8a04", "tonalRamp": ["#713f12", "#854d0e", "#a16207", "#ca8a04", "#eab308", "#facc15", "#fde047", "#fef08a", "#fefce8"] },
+      "priority-low-text": { "role": "semantic", "displayName": "Low Priority", "canonical": "#16a34a", "tonalRamp": ["#052e16", "#14532d", "#166534", "#15803d", "#16a34a", "#22c55e", "#4ade80", "#86efac", "#bbf7d0", "#dcfce7", "#f0fdf4"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Page-level headings only (Dashboard greeting, Login panel headline)." },
+      "headline": { "displayName": "Headline", "purpose": "Modal titles, section headers." },
+      "title": { "displayName": "Title", "purpose": "Card titles, list item names, button labels." },
+      "body": { "displayName": "Body", "purpose": "Paragraphs, descriptions, input values." },
+      "label": { "displayName": "Label", "purpose": "Form labels, field headers, stat labels." },
+      "caption": { "displayName": "Caption", "purpose": "Timestamps, metadata, badge text." }
+    },
+    "shadows": [
+      { "name": "hover", "value": "0 1px 3px 0 rgb(0 0 0 / 0.1)", "purpose": "Hover state for actionable cards." },
+      { "name": "modal", "value": "0 20px 25px -5px rgb(0 0 0 / 0.1)", "purpose": "Modal/dialog surface elevation." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default easing for state transitions." },
+      { "name": "duration-standard", "value": "150ms", "purpose": "Standard transition duration." },
+      { "name": "duration-enter", "value": "180ms", "purpose": "Fade-in entrance for modals and new content." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary action button. Used for creating boards, inviting members, submitting forms.",
+      "html": "<button class=\"ds-btn-primary\">Create Board</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 6px; background: #6366f1; color: #fff; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 500; padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; transition: background 0.15s ease; line-height: 1.4; } .ds-btn-primary:hover { background: #4f46e5; } .ds-btn-primary:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; } .ds-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary/ghost button for icon-only actions, nav items, and less prominent controls.",
+      "html": "<button class=\"ds-btn-ghost\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><polyline points=\"15 3 21 3 21 9\"/><polyline points=\"9 21 3 21 3 15\"/><line x1=\"21\" y1=\"3\" x2=\"14\" y2=\"10\"/><line x1=\"3\" y1=\"21\" x2=\"10\" y2=\"14\"/></svg></button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; gap: 4px; background: transparent; color: #6b7280; font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 500; padding: 6px 10px; border: none; border-radius: 8px; cursor: pointer; transition: background 0.15s ease, color 0.15s ease; line-height: 1.4; } .ds-btn-ghost:hover { background: #f3f4f6; color: #111827; } .ds-btn-ghost:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
+    },
+    {
+      "name": "Board Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Board card shown on the Dashboard grid. Has a colored top strip, icon, title, and metadata.",
+      "html": "<div class=\"ds-card-board\"><div class=\"ds-card-board-strip\" style=\"background:#6366f1\"></div><div class=\"ds-card-board-body\"><div class=\"ds-card-board-icon\" style=\"background:rgba(99,102,241,0.09)\"><div style=\"width:16px;height:16px;border-radius:2px;background:#6366f1\"></div></div><h3 class=\"ds-card-board-title\">Sprint Q2</h3><div class=\"ds-card-board-meta\"><span class=\"ds-card-board-date\">Today</span><span class=\"ds-card-board-action\">Open →</span></div></div></div>",
+      "css": ".ds-card-board { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; cursor: pointer; overflow: hidden; transition: border-color 0.15s ease, box-shadow 0.15s ease; } .ds-card-board:hover { border-color: #d1d5db; box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); } .ds-card-board-strip { height: 4px; width: 100%; } .ds-card-board-body { padding: 16px; } .ds-card-board-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; } .ds-card-board-title { font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 600; color: #111827; margin: 0 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .ds-card-board-meta { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid #f3f4f6; } .ds-card-board-date { font-size: 12px; color: #9ca3af; } .ds-card-board-action { font-size: 12px; font-weight: 500; color: #9ca3af; transition: color 0.15s ease; } .ds-card-board:hover .ds-card-board-action { color: #6366f1; }"
+    },
+    {
+      "name": "Task Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Task card within a Kanban column. Draggable, shows title, description snippet, priority badge, deadline, and avatars.",
+      "html": "<div class=\"ds-card-task\"><p class=\"ds-card-task-title\">Design system tokens</p><p class=\"ds-card-task-desc\">Define color, typography, and spacing tokens</p><div class=\"ds-card-task-footer\"><span class=\"ds-chip ds-chip-high\">High</span><span class=\"ds-card-task-deadline\">17 Jun</span><div class=\"ds-avatar ds-avatar-sm\">H</div></div></div>",
+      "css": ".ds-card-task { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 12px; transition: border-color 0.15s ease, box-shadow 0.15s ease; } .ds-card-task:hover { border-color: #d1d5db; box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); } .ds-card-task-title { font-family: Inter, system-ui, sans-serif; font-size: 14px; color: #1f2937; margin: 0 0 8px 0; line-height: 1.4; } .ds-card-task-desc { font-family: Inter, system-ui, sans-serif; font-size: 12px; color: #9ca3af; margin: 0 0 8px 0; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; } .ds-card-task-footer { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; } .ds-chip { font-size: 11px; font-weight: 500; padding: 2px 6px; border-radius: 6px; border: 1px solid; } .ds-chip-high { background: #fff1f2; color: #e11d48; border-color: #fecdd3; } .ds-chip-medium { background: #fefce8; color: #ca8a04; border-color: #fde047; } .ds-chip-low { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; } .ds-card-task-deadline { font-size: 11px; color: #9ca3af; } .ds-avatar { border-radius: 50%; font-weight: 700; display: flex; align-items: center; justify-content: center; } .ds-avatar-sm { width: 20px; height: 20px; font-size: 9px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Standard text input for forms, search, and inline editing.",
+      "html": "<div><label class=\"ds-label\">Email</label><input class=\"ds-input\" type=\"email\" placeholder=\"name@email.com\"></div>",
+      "css": ".ds-label { display: block; font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 500; color: #374151; margin-bottom: 6px; } .ds-input { width: 100%; padding: 10px 12px; font-family: Inter, system-ui, sans-serif; font-size: 14px; color: #111827; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; outline: none; transition: border-color 0.15s ease, box-shadow 0.15s ease; box-sizing: border-box; } .ds-input::placeholder { color: #9ca3af; } .ds-input:focus { border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99,102,241,0.1); } .ds-input:disabled { background: #f3f4f6; opacity: 0.6; cursor: not-allowed; }"
+    },
+    {
+      "name": "Modal / Dialog",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Overlay dialog for creating boards, managing members, and viewing invitations.",
+      "html": "<div class=\"ds-backdrop\"><div class=\"ds-modal\"><div class=\"ds-modal-header\"><h2 class=\"ds-modal-title\">New Board</h2><button class=\"ds-modal-close\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"/><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"/></svg></button></div><div class=\"ds-modal-body\"><p class=\"ds-modal-body-text\">Modal content here.</p></div></div></div>",
+      "css": ".ds-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 16px; } .ds-modal { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; width: 100%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); animation: ds-fadeIn 0.18s ease both; } .ds-modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid #f3f4f6; } .ds-modal-title { font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 600; color: #111827; margin: 0; } .ds-modal-close { background: transparent; border: none; color: #9ca3af; padding: 4px; border-radius: 8px; cursor: pointer; transition: background 0.15s ease, color 0.15s ease; } .ds-modal-close:hover { background: #f3f4f6; color: #4b5563; } .ds-modal-body { padding: 20px 24px; } .ds-modal-body-text { font-family: Inter, system-ui, sans-serif; font-size: 14px; color: #6b7280; margin: 0; } @keyframes ds-fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Collaborative Canvas",
+    "overview": "TaskFlow is a collaborative Kanban board built for small teams who need to organize work without drowning in features. The interface is a clean, flat canvas where board colors — not chrome — carry the personality. The system explicitly rejects the dense, dark-mode-heavy, enterprise-tool aesthetic of Jira and Linear. Instead it takes cues from Trello's simplicity: approachable, colorful, and unintimidating.",
+    "keyCharacteristics": [
+      "Flat by default; surfaces are defined by subtle borders (gray-200), not shadows",
+      "Board colors are the primary source of visual personality — the UI chrome stays neutral",
+      "Lightweight interactions: inline edit, drag-and-drop, instant sync",
+      "Typography is single-family Inter at 14px body — no hero typography, no display flourishes",
+      "Motion is restrained: state transitions at 150–200ms, no choreographed entrances"
+    ],
+    "rules": [
+      { "name": "The Accent Rarity Rule", "body": "The primary Indigo covers ≤10% of any screen. Its restraint is the point — when the user sees Indigo, they know it means 'action.'", "section": "colors" },
+      { "name": "The Board-Color-First Rule", "body": "The UI chrome is always neutral (gray-50/gray-200/white). Color on the page comes from board swatches and priority badges, not from decorative UI accents.", "section": "colors" },
+      { "name": "The No-Headline-As-Design Rule", "body": "Headlines stay at 24px or below. There are no hero sections, no marketing typography. The app is a tool, not a landing page.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. Shadows appear only in direct response to state (hover on actionable elements, open modals). No card ever has a resting shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Use the Indigo accent sparingly — one primary button, one link, one active tab per page.",
+      "Let board colors carry the visual personality. The chrome stays neutral.",
+      "Use borders, not shadows, to define containers at rest.",
+      "Prefer inline editing over modals for task properties (title, description, priority).",
+      "Keep motion to 150–200ms ease-out transitions (state changes only).",
+      "Show real-time status (Wifi icon) so the user knows sync is live.",
+      "Use the fade-in animation for entering modals and new content."
+    ],
+    "donts": [
+      "Don't create a Jira/Linear/Notion clone — no dark mode by default, no dense sidebars, no overflowing metastrip headers.",
+      "Don't use gradient text, glassmorphism, or decorative blurs anywhere.",
+      "Don't apply shadows to cards at rest. Shadows mean 'this is elevated right now.'",
+      "Don't use border-left greater than 1px as a colored accent stripe on cards or list items.",
+      "Don't put tiny uppercase tracked eyebrows ('CREATE' 'MANAGE') above section headings.",
+      "Don't hide primary actions behind nested menus or kebab icons — inline or directly visible.",
+      "Don't use hero-metric layouts (big number, small label, gradient accent).",
+      "Don't gate content visibility on class-triggered transitions.",
+      "Don't disable reduced-motion support. All animations must have a prefers-reduced-motion: reduce path."
+    ]
+  }
+}

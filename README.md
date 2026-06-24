@@ -1,10 +1,10 @@
-# TaskFlow — Modern Kanban Board
+# ts-flow — Kanban Board
 
-TaskFlow is a modern, clean, and performant Kanban board built with **React**, **TypeScript**, **Tailwind CSS v4**, and **Supabase**. It brings the power of visual task management with real-time team collaboration — think Trello, but self-hosted and lightweight.
+**ts-flow** (short for *TypeScript Flow*) is a modern, clean, and performant Kanban board built with **React**, **TypeScript**, **Tailwind CSS v4**, and **Supabase**. It brings the power of visual task management with real-time team collaboration — think Trello, but self-hosted and lightweight.
 
 ---
 
-## Why TaskFlow?
+## Why ts-flow?
 
 | Advantage | What it means for you |
 |---|---|
