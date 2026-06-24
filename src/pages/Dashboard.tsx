@@ -231,7 +231,7 @@ export default function Dashboard() {
             <h1 className="text-2xl font-bold text-gray-900 capitalize">{firstName} 👋</h1>
           </div>
           <button onClick={() => setShowModal(true)}
-            className="flex items-center gap-1.5 bg-primary hover:bg-indigo-600 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors shadow-sm shadow-primary/20">
+            className="flex items-center gap-1.5 bg-primary hover:bg-indigo-600 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors">
             <Plus size={15} strokeWidth={2.5} />
             <span className="hidden sm:inline">New Board</span>
             <span className="sm:hidden">New</span>
@@ -242,18 +242,23 @@ export default function Dashboard() {
         {!isLoading && (
           <div className="grid grid-cols-3 gap-3 mb-8">
             {[
-              { label: "My Boards", value: boards?.length ?? 0, icon: "📋" },
-              { label: "Collab", value: sharedBoards?.length ?? 0, icon: "🤝" },
-              { label: "Created this month", value: boards?.filter(b => new Date(b.created_at).getMonth() === new Date().getMonth()).length ?? 0, icon: "📅" },
-            ].map(s => (
-              <div key={s.label} className="bg-white border border-gray-200 rounded-xl px-4 py-3.5">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sm">{s.icon}</span>
-                  <span className="text-xs text-gray-500">{s.label}</span>
+              { label: "My Boards", value: boards?.length ?? 0, icon: LayoutGrid },
+              { label: "Collaborations", value: sharedBoards?.length ?? 0, icon: Users },
+              { label: "Created this month", value: boards?.filter(b => new Date(b.created_at).getMonth() === new Date().getMonth()).length ?? 0, icon: Calendar },
+            ].map(s => {
+              const Icon = s.icon;
+              return (
+                <div key={s.label} className="bg-white border border-gray-200 rounded-xl px-4 py-3.5">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-5 h-5 rounded flex items-center justify-center bg-gray-100 text-gray-400">
+                      <Icon size={13} />
+                    </div>
+                    <span className="text-xs text-gray-500">{s.label}</span>
+                  </div>
+                  <p className="text-xl font-bold text-gray-900">{s.value}</p>
                 </div>
-                <p className="text-xl font-bold text-gray-900">{s.value}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 

@@ -66,7 +66,7 @@ function ManageMembersModal({ boardId, boardTitle, boardColor, onClose }: {
         <div className="p-5">
           <p className="text-xs font-medium text-gray-600 mb-2">Invite new member</p>
           <div className="flex gap-2 mb-4">
-            <input type="email" placeholder="email@contoh.com"
+                  <input type="email" placeholder="email@example.com"
               value={email} onChange={e => setEmail(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleInvite()}
               className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"

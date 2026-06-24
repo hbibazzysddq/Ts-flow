@@ -226,7 +226,7 @@ function KanbanColumn({ column, tasks, accent, onDeleteColumn, onNavigate, onDel
   };
 
   return (
-    <div className="flex-shrink-0 w-[272px] flex flex-col bg-gray-100/60 rounded-xl border border-gray-200 max-h-[calc(100vh-80px)] overflow-hidden">
+    <div className="flex-shrink-0 w-[272px] flex flex-col bg-gray-100/60 rounded-xl border border-gray-200 max-h-[calc(100vh-80px)]">
       {/* Header */}
       <div className="flex items-center justify-between px-3 py-2.5 bg-white border-b border-gray-200 rounded-t-xl">
         <div className="flex items-center gap-2">
@@ -243,7 +243,7 @@ function KanbanColumn({ column, tasks, accent, onDeleteColumn, onNavigate, onDel
             <div className="absolute right-0 top-7 bg-white border border-gray-200 rounded-lg shadow-md py-1 w-36 z-10">
               <button onClick={() => { setShowMenu(false); onDeleteColumn(column.id); }}
                 className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors">
-                <Trash2 size={12} /> Hapus kolom
+                <Trash2 size={12} /> Delete column
               </button>
             </div>
           )}
@@ -486,7 +486,7 @@ export default function Board() {
           <h1 className="text-sm font-semibold text-gray-900 truncate">{currentBoard?.title ?? "Board"}</h1>
           {columns && (
             <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md flex-shrink-0">
-              {columns.length} kolom
+               {columns.length} columns
             </span>
           )}
         </div>
@@ -510,7 +510,7 @@ export default function Board() {
         )}
 
         {/* Realtime indicator */}
-        <div className="flex items-center gap-1 flex-shrink-0" title={connected ? "Terhubung realtime" : "Offline"}>
+        <div className="flex items-center gap-1 flex-shrink-0" title={connected ? "Connected" : "Offline"}>
           {connected
             ? <Wifi size={13} className="text-green-500" />
             : <WifiOff size={13} className="text-red-400" />}
@@ -521,7 +521,7 @@ export default function Board() {
           <button onClick={() => setShowInvite(true)}
             className="flex items-center gap-1.5 text-xs font-medium text-gray-600 px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex-shrink-0">
             <UserPlus size={13} />
-            <span className="hidden sm:inline">Undang</span>
+            <span className="hidden sm:inline">Invite</span>
           </button>
         )}
         {!isOwner && (
@@ -560,15 +560,15 @@ export default function Board() {
             <div className="flex-shrink-0 w-[272px]">
               {showInput ? (
                 <div className="bg-white border border-indigo-300 rounded-xl p-3 shadow-sm">
-                  <input type="text" placeholder="Nama kolom..." value={colTitle}
+                  <input type="text" placeholder="Column name..." value={colTitle}
                     onChange={e => setColTitle(e.target.value)}
                     onKeyDown={e => { if (e.key === "Enter") handleCreateColumn(); if (e.key === "Escape") setShowInput(false); }}
                     autoFocus
                     className="w-full text-sm text-gray-800 bg-transparent border-none outline-none placeholder-gray-400 mb-2.5" />
                   <div className="flex gap-1.5">
                     <button onClick={handleCreateColumn} disabled={!colTitle.trim() || createColumn.isPending}
-                      className="px-3 py-1.5 bg-primary text-white text-xs font-medium rounded-lg hover:bg-indigo-600 disabled:opacity-50 transition-colors">
-                      {createColumn.isPending ? "..." : "Tambah"}
+                    className="px-3 py-1.5 bg-primary text-white text-xs font-medium rounded-lg hover:bg-indigo-600 disabled:opacity-50 transition-colors">
+                    {createColumn.isPending ? "..." : "Add"}
                     </button>
                     <button onClick={() => { setShowInput(false); setColTitle(""); }}
                       className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
@@ -580,7 +580,7 @@ export default function Board() {
                 <button onClick={() => setShowInput(true)}
                   className="w-full flex items-center gap-2 px-3.5 py-2.5 text-sm text-gray-400 hover:text-gray-600 bg-white/60 hover:bg-white border border-dashed border-gray-300 hover:border-gray-400 rounded-xl transition-all">
                   <Plus size={14} strokeWidth={2.5} />
-                  Tambah kolom
+                  Add column
                 </button>
               )}
             </div>
